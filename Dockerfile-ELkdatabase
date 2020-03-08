@@ -1,0 +1,31 @@
+#installing ubunto OS from docker hub
+FROM ubuntu:18.04
+
+# install system packages.
+RUN set -x \
+	&& apt update -y \
+  	&& apt install -y wget python-pip \
+  	&& pip install supervisor \
+  	&& mkdir /etc/supervisord.d 
+
+#Installing elastic search (downloading and extract)
+COPY elasticsearch-7.6.0-amd64.deb /tmp
+WORKDIR /tmp
+RUN set -x \
+	&& apt install -y ./elasticsearch-7.6.0-amd64.deb
+
+#starting interactive container and adding users to run the elastic search db by giving necessary permissions.
+RUN set -x \
+	&& useradd -m -s /bin/bash -d /usr/local/lib/elkadmin elkadmin \
+	&& chmod 757 -Rf /etc/elasticsearch \
+	&& chmod 757 -Rf /var/lib/elasticsearch \
+	&& chmod 757 -Rf /var/log/elasticsearch
+
+
+#CMD /bin/su elkadmin /bin/bash -c "./usr/share/elasticsearch/bin/elasticsearch"
+
+
+
+
+
+

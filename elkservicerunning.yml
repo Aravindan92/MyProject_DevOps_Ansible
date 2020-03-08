@@ -1,0 +1,12 @@
+version: '3'
+services:
+  app:
+    image: myproject/elasticsearchdb:latest
+    container_name: myproject
+    command: "/bin/su elkadmin /bin/bash -c ./usr/share/elasticsearch/bin/elasticsearch"
+    hostname: myproject
+    volumes :
+      -/home/aravindan/myproject
+
+
+

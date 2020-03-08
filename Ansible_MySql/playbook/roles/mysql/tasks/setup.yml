@@ -1,0 +1,42 @@
+
+# #Setting up environment variable for mysql
+# - name: set up environment variable for mysql
+#   command: "{{item}}"
+#   loop: 
+#     - DEBIAN_FRONTEND=noninteractive
+#     - export DEBIAN_FRONTEND
+#   tags:
+#     - setup
+
+#Copying mysql using package present locally
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{item}}"
+    dest: /tmp/{{item}}
+    owner: root
+    group: root
+    mode: 755
+  loop:
+    - percona-server-common-5.7_5.7.29-32-1.bionic_amd64.deb
+    - percona-server-client-5.7_5.7.29-32-1.bionic_amd64.deb
+    - percona-server-server-5.7_5.7.29-32-1.bionic_amd64.deb
+  tags:
+    - setup
+
+#Installing mysql packages
+- name: Install mysql package
+  apt: 
+    deb: /tmp/{{item}}
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  loop: 
+      - percona-server-common-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-client-5.7_5.7.29-32-1.bionic_amd64.deb
+      - percona-server-server-5.7_5.7.29-32-1.bionic_amd64.deb
+  tags:
+    - setup
+
+
+
+
+
